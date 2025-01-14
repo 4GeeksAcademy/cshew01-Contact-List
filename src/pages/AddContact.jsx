@@ -1,8 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AddContact = () => {
+  const [contact, setContact] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+  });
+
+  const submitForm = async () => {
+    const resp = await fetch(
+      "https://playground.4geeks.com/contact/agendas/cshew01/contacts",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(contact),
+      }
+    );
+    const data = await resp.json();
+  };
+
   return (
-    <form className="px-3">
+    <form className="px-3" onSubmit={submitForm}>
       <h1>Add A New Contact</h1>
       <div className="mb-3">
         <label for="fullName" className="form-label">
@@ -14,6 +36,13 @@ const AddContact = () => {
           id="fullName"
           aria-describedby="fullNameHelp"
           placeholder="Enter Full Name"
+          value={contact.name}
+          onChange={(ev) =>
+            setContact({
+              ...contact,
+              name: ev.target.value,
+            })
+          }
         />
       </div>
       <div className="mb-3">
@@ -26,6 +55,13 @@ const AddContact = () => {
           id="emailAddress"
           aria-describedby="emailHelp"
           placeholder="Enter Email"
+          value={contact.email}
+          onChange={(ev) =>
+            setContact({
+              ...contact,
+              email: ev.target.value,
+            })
+          }
         />
       </div>
       <div className="mb-3">
@@ -37,8 +73,14 @@ const AddContact = () => {
           className="form-control"
           id="phone"
           aria-describedby="phoneHelp"
-          pattern="[0-9]{3}.[0-9]{3}.[0-9]{4}"
           placeholder="Enter Phone Number"
+          value={contact.phone}
+          onChange={(ev) =>
+            setContact({
+              ...contact,
+              phone: ev.target.value,
+            })
+          }
         />
       </div>
       <div className="mb-3">
@@ -51,11 +93,20 @@ const AddContact = () => {
           id="address"
           aria-describedby="addressHelp"
           placeholder="Enter Address"
+          value={contact.address}
+          onChange={(ev) =>
+            setContact({
+              ...contact,
+              address: ev.target.value,
+            })
+          }
         />
       </div>
       <div className="d-flex justify-content-center align-items-center">
         <button className="btn btn-primary mx-1 col-4">SAVE</button>
-        <button className="btn btn-primary mx-1 col-4">Return to contacts</button>
+        <Link className="btn btn-primary mx-1 col-4" to="/">
+          Return to Contacts
+        </Link>
       </div>
     </form>
   );

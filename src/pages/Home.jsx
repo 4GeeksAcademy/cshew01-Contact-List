@@ -1,16 +1,25 @@
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
 
   const [contacts, setContacts] = useState([]);
 
+  // checks for the API URL.  If it doesnt exist it will throw an error and create one.
+  // If it does exist it will read the data from the API
   const getContacts = async () => {
     const resp = await fetch(
       "https://playground.4geeks.com/contact/agendas/cshew01"
     );
+    if (!resp.ok) {
+      throw Error("User doesn't exist");
+      fetch("https://playground.4geeks.com/contact/agendas/cshew01", {
+        method: "POST"
+      });
+    }
     const data = await resp.json();
     setContacts(data.contacts);
   };
@@ -22,13 +31,13 @@ export const Home = () => {
   return (
     <>
       <div className="container m-2 p-2 d-flex justify-content-end">
-        <button className="btn btn-primary">Add A New Contact</button>
+        <Link className="btn btn-primary" to="/AddContact">Add A New Contact</Link>
       </div>
       {contacts.map((contact) => (
         <div className="container border m-2 p-2">
           <div className="row">
-            <div className="col-3">
-              <h1>Picture</h1>
+            <div className="col-3 my-auto">
+              <img src="https://randomuser.me/api/portraits/men/86.jpg" id="large_img" className="rounded-circle"/>
             </div>
 
             <div className="col-7">
