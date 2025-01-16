@@ -1,13 +1,14 @@
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
 
   const [contacts, setContacts] = useState([]);
   const [removeId, setRemoveId] = useState(null);
+  const navigate = useNavigate(); 
 
   // checks for the API URL.  If it doesnt exist it will throw an error and create one.
   // If it does exist it will read the data from the API
@@ -42,8 +43,8 @@ export const Home = () => {
   };
 
   //Edit Contacts
-  const editContact = async (id) => {
-    //open a new page to edit contact
+  const handleEditContact = () => {
+    navigate("/EditContact");
   };
 
   useEffect(() => {
@@ -84,16 +85,18 @@ export const Home = () => {
               </div>
             </div>
 
-            <div className="col-2 d-flex justify-content-end">
+            <div className="col-2 d-flex justify-content-end h-25">
+              <Link className="text-dark" to={"/EditContact/"+contact.id}>
               <i
                 className="fa-solid fa-pencil"
-                style={{ cursor: "pointer" }}
-                onClick={() => editContact(contact.id)}
+                style = {{cursor: "pointer"}}
+                
               ></i>
+              </Link>
               <i
                 className="fa-solid fa-trash"
                 style={{ cursor: "pointer" }}
-                onClick={() => setRemoveId(true)}
+                onClick={() => setRemoveId(contact.name)}
               ></i>
             </div>
           </div>
@@ -105,7 +108,7 @@ export const Home = () => {
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">{removeId} Delete Contact</h5>
+                <h5 class="modal-title">Permanently Delete {removeId}</h5>
                 <button
                   type="button"
                   class="btn-close"
