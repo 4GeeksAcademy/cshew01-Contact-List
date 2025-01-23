@@ -13,11 +13,17 @@ export const Layout = () => {
     const resp = await fetch(
       "https://playground.4geeks.com/contact/agendas/cshew01"
     );
-    const data = await resp.json();
-    dispatch({
-      type: "load_contacts",
-      contacts: data.contacts,
-    });
+    if (resp.ok) {
+      const data = await resp.json();
+      dispatch({
+        type: "load_contacts",
+        contacts: data.contacts,
+      });
+    } else {
+      fetch("https://playground.4geeks.com/contact/agendas/cshew01", {
+        method: "POST",
+      });
+    }
   };
 
   useEffect(() => {

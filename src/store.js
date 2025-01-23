@@ -16,10 +16,10 @@ export default function storeReducer(store, action = {}) {
 
  
   if (action.type === "update_contact") {
-    // Get the updated book
+    // Get the updated contact
     const { updated_contact } = action;
 
-    // Find the index of the old book
+    // Find the index of the old contact
     const contact_idx = store.contacts.findIndex(
       (contact) => contact.id === updated_contact.id
     );
@@ -34,4 +34,21 @@ export default function storeReducer(store, action = {}) {
       contacts: updated_contacts,
     }
   }
+
+  
+  if (action.type === "remove_contact") {
+    // Get the contact to be removed
+    const { remove_contact } = action;
+
+    // Find the index of the contact
+    const contact_idx = store.contacts.findIndex(
+      (contact) => contact.id === remove_contact
+    );
+
+    // Return the updated store.
+    return {
+      ...store,
+      contacts: store.contacts.toSpliced(contact_idx, 1),
+    }
+  }  
 }

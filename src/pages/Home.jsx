@@ -8,23 +8,7 @@ export const Home = () => {
 
   const [contacts, setContacts] = useState([]);
   const [removeId, setRemoveId] = useState(null);
-  const navigate = useNavigate(); 
-
-  // checks for the API URL.  If it doesnt exist it will throw an error and create one.
-  // If it does exist it will read the data from the API
-  const getContacts = async () => {
-    try {
-      const resp = await fetch(
-        "https://playground.4geeks.com/contact/agendas/cshew01"
-      );
-      const data = await resp.json();
-      setContacts(data.contacts);
-    } catch (e) {
-      fetch("https://playground.4geeks.com/contact/agendas/cshew01", {
-        method: "POST",
-      });
-    }
-  };
+  const navigate = useNavigate();
 
   //Deletes Contacts
   const removeContact = (id) => {
@@ -37,7 +21,12 @@ export const Home = () => {
       if (!resp.ok) {
         throw new Error("Failed to delete");
       }
-      setContacts(contacts.filter((contact) => contact.id !== id));
+
+      dispatch({
+        type: "remove_contact",
+        remove_contact: id,
+      });
+      // setContacts(store.contacts.filter((contact) => contact.id !== id));
       setRemoveId(null);
     });
   };
@@ -48,8 +37,11 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    getContacts();
-  }, []);
+    setContacts(store.contacts);
+  }, [store]);
+  // useEffect(() => {
+  //   getContacts();
+  // }, []);
 
   return (
     <>
@@ -58,7 +50,7 @@ export const Home = () => {
           Add A New Contact
         </Link>
       </div>
-      {contacts.map((contact) => (
+      {store.contacts.map((contact) => (
         <div className="container border m-2 p-2">
           <div className="row">
             <div className="col-3 my-auto">
@@ -86,17 +78,16 @@ export const Home = () => {
             </div>
 
             <div className="col-2 d-flex justify-content-end h-25">
-              <Link className="text-dark" to={"/EditContact/"+contact.id}>
-              <i
-                className="fa-solid fa-pencil"
-                style = {{cursor: "pointer"}}
-                
-              ></i>
+              <Link className="text-dark" to={"/EditContact/" + contact.id}>
+                <i
+                  className="fa-solid fa-pencil"
+                  style={{ cursor: "pointer" }}
+                ></i>
               </Link>
               <i
                 className="fa-solid fa-trash"
                 style={{ cursor: "pointer" }}
-                onClick={() => setRemoveId(contact.name)}
+                onClick={() => {setRemoveId(contact)}}
               ></i>
             </div>
           </div>
@@ -108,7 +99,7 @@ export const Home = () => {
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Permanently Delete {removeId}</h5>
+                <h5 class="modal-title">Permanently Delete {removeId.name}</h5>
                 <button
                   type="button"
                   class="btn-close"
@@ -129,7 +120,7 @@ export const Home = () => {
                 <button
                   type="button"
                   class="btn btn-primary"
-                  onClick={() => removeContact(removeId)}
+                  onClick={() => removeContact(removeId.id)}
                 >
                   Yes
                 </button>
