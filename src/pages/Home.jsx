@@ -78,7 +78,7 @@ export const Home = () => {
             </div>
 
             <div className="col-2 d-flex justify-content-end h-25">
-              <Link className="text-dark" to={"/EditContact/" + contact.id}>
+              <Link className="text-dark" to={`/EditContact/${contact.id}`}>
                 <i
                   className="fa-solid fa-pencil"
                   style={{ cursor: "pointer" }}

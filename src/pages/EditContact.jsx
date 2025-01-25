@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer";
+import { useParams } from "react-router-dom";
+
 
 const EditContact = () => {
+  const {id} = useParams();
   const [contact, setContact] = useState({});
   const { store, dispatch } = useGlobalReducer();
 
   useEffect(() => {
     setContact(store.contacts.find((contact) => contact.id == id));
-  }, [store]);
+  }, [store,id]);
 
   const submitEdit = async () => {
     const resp = await fetch(`https://playground.4geeks.com/contact/agendas/cshew01/contacts/${contact.id}`, {
