@@ -29,6 +29,7 @@ const EditContact = () => {
     });
     
     setContact(data);
+    window.location.replace("https://studious-guacamole-x5vv9wqwprr43prg6-3000.app.github.dev/")
   }
 
   return (
@@ -107,9 +108,9 @@ const EditContact = () => {
             />
           </div>
           <div className="d-flex justify-content-center align-items-center">
-            <button className="btn btn-primary mx-1 col-4">SAVE</button>
-            <Link className="btn btn-primary mx-1 col-4" to="/">
-              Return to Contacts
+            <button className="btn btn-primary mx-1 col-4">Submit</button>
+            <Link className="btn btn-primary mx-1 col-4" to='/'>
+              Cancel
             </Link>
           </div>
         </form>
